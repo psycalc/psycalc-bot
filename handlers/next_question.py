@@ -2,6 +2,7 @@ import json
 from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
 from telegram.ext import CallbackContext
 from globals import user_answers
+from telegram import ParseMode
 
 
 # Load the list of questions from file
@@ -14,7 +15,8 @@ def show_next_question(update: Update, context: CallbackContext, current_questio
     chat_id = update.effective_chat.id
 
     # Get current question
-    question = questions[current_question_index]["question"]
+    question = f"{current_question_index+1}. {questions[current_question_index]['question']}"
+
 
     # Get options for current question
     options = questions[current_question_index]["options"]

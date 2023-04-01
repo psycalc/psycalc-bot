@@ -2,6 +2,8 @@ import logging
 import os
 import json
 from dotenv import load_dotenv
+from telegram import ParseMode
+
 
 from telegram.ext import Updater, CommandHandler, CallbackQueryHandler
 
@@ -28,6 +30,7 @@ updater = Updater(token=API_KEY, use_context=True)
 # Add handlers for commands and messages
 updater.dispatcher.add_handler(CommandHandler("start", start))
 updater.dispatcher.add_handler(CallbackQueryHandler(handle_response))
+updater.dispatcher.add_handler(CallbackQueryHandler(show_next_question, pattern='next'))
 
 # Start the bot
 updater.start_polling()
