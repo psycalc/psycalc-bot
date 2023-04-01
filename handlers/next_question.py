@@ -1,13 +1,12 @@
 import json
 from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
 from telegram.ext import CallbackContext
+from globals import user_answers
+
 
 # Load the list of questions from file
 with open("temporisticsQuestions.en.json", "r", encoding="utf-8") as f:
     questions = json.load(f)
-
-# Store user answers
-user_answers = {}
 
 
 def show_next_question(update: Update, context: CallbackContext, current_question_index: int):

@@ -2,14 +2,13 @@ import json
 from telegram import Update
 from telegram.ext import CallbackContext
 from handlers.next_question import show_next_question
+from globals import user_answers
+
 
 
 # Load the list of questions from file
 with open("temporisticsQuestions.en.json", "r", encoding="utf-8") as f:
     questions = json.load(f)
-
-# Store user answers
-user_answers = {}
 
 def handle_response(update: Update, context: CallbackContext):
     query = update.callback_query
