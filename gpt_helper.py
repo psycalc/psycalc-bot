@@ -30,7 +30,7 @@ def main():
     args = parser.parse_args()
 
     # Determine the maximum number of characters in the concatenated buffer
-    max_chars = MODEL_LIMITATIONS.get(args.gpt_model, 10000)
+    max_chars = MODEL_LIMITATIONS.get(args.gpt_model, 1024)
 
     # Recursively scan the folder for files modified within the last 30 minutes and sort by modification time
     file_paths = []
@@ -54,7 +54,7 @@ def main():
     chars = 0
     for file_path, _ in file_paths[:3]:
         with open(file_path, 'r') as f:
-            file_content = f.read().strip()
+            file_content = f.read()
             if file_content:
                 chars += len(file_content)
                 if chars <= max_chars:
@@ -70,7 +70,8 @@ def main():
         # print(f"{file_path} ({mod_time})")
         # same as above, but full path
         full_file_path = os.path.abspath(file_path)
-        print(f"{full_file_path} ({chars})")
+        print(f"{full_file_path} ({len(open(file_path).read())})")
+
 
 if __name__ == '__main__':
     main()
