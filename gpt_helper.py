@@ -2,60 +2,54 @@ import os
 import pyperclip
 import argparse
 import datetime
+import yaml
+import glob
+
+# Load the configuration from the YAML file
+with open("gpt_helper_configuration.yaml", "r") as config_file:
+    config = yaml.safe_load(config_file)
+
+ignored_directories = config["ignored_directories"]
+ignored_files = config["ignored_files"]
+config_files = config["files"]
 
 # Define a dictionary to store the limitations for different GPT models
 MODEL_LIMITATIONS = {
-    'GPT': 1024,
-    'GPT-2': 2048,
     'GPT-3': 4096,
-    'GPT-Neo': 2048,
-    'GPT-3.5B': 4096,
-    'GPT-3.6B': 4096
+    'GPT-4': 8192,
 }
 
 def is_file_ignored(file_path):
-    ignored_files = ['.env', '.gitignore', '.dockerignore']
     return any(file_path.endswith(ignored_file) for ignored_file in ignored_files)
 
 def is_directory_ignored(dir_path):
-    ignored_directories = ['node_modules', '.git', '.venv', '.vscode', 'dist', 'build', 'venv', '__pycache__']
-    return any(dir_path.endswith(ignored_directory) for ignored_directory in ignored_directories)
+    return any(ignored_directory in dir_path.split(os.path.sep) for ignored_directory in ignored_directories)
+
+def get_files_from_config():
+    all_files = []
+    for file_pattern in config_files:
+        matched_files = glob.glob(file_pattern, recursive=True)
+        all_files.extend(matched_files)
+    return all_files
 
 def main():
     # Parse command-line arguments
-    parser = argparse.ArgumentParser(description='Concatenate the contents of the three most recently modified files in a folder within the last 30 minutes.')
-    parser.add_argument('folder_path', help='the folder path to scan')
+    parser = argparse.ArgumentParser(description='Concatenate the contents of the specified files in the configuration file.')
     parser.add_argument('-m', '--max-chars', type=int, default=10000, help='the maximum number of characters in the concatenated buffer (default: 10000)')
     parser.add_argument('-g', '--gpt-model', default='GPT-3', help='the GPT model being used (default: GPT-3)')
     args = parser.parse_args()
 
     # Determine the maximum number of characters in the concatenated buffer
-    max_chars = MODEL_LIMITATIONS.get(args.gpt_model, 1024)
+    max_chars = min(MODEL_LIMITATIONS.get(args.gpt_model, 1024), args.max_chars)
 
-    # Recursively scan the folder for files modified within the last 30 minutes and sort by modification time
-    file_paths = []
-    now = datetime.datetime.now()
-    threshold = now - datetime.timedelta(minutes=30)
-    for root, dirs, files in os.walk(args.folder_path):
-        if is_directory_ignored(root):
-            continue
-        for name in files:
-            file_path = os.path.join(root, name)
-            if is_file_ignored(file_path):
-                continue
-            if file_path.endswith('.py') or file_path.endswith('.txt'):
-                mod_time = datetime.datetime.fromtimestamp(os.path.getmtime(file_path))
-                if mod_time > threshold:
-                    file_paths.append((file_path, mod_time))
-    file_paths.sort(key=lambda x: x[1], reverse=True)
+    # Get the list of files specified in the config
+    file_paths = get_files_from_config()
 
-    # Concatenate the contents of the three most recently modified files into a buffer, taking character count into consideration
+    # Concatenate the contents of the specified files into a buffer, taking character count into consideration
     contents = []
     chars = 0
-    for file_path, _ in file_paths[:3]:
+    for file_path in file_paths:
         with open(file_path, 'r') as f:
-            # file_content = f.read()
-            # same as above, but first line full path
             file_content = os.path.abspath(file_path) + '\n' + f.read()
             if file_content:
                 chars += len(file_content)
@@ -67,13 +61,10 @@ def main():
 
     # Copy buffer to clipboard
     pyperclip.copy(buffer)
-    print(f"Copied {chars} characters from the following {len(contents)} files modified within the last 30 minutes:")
-    for file_path, mod_time in file_paths[:len(contents)]:
-        # print(f"{file_path} ({mod_time})")
-        # same as above, but full path
+    print(f"Copied {chars} characters from the following {len(contents)} files:")
+    for file_path in file_paths[:len(contents)]:
         full_file_path = os.path.abspath(file_path)
         print(f"{full_file_path} ({len(open(file_path).read())})")
-
 
 if __name__ == '__main__':
     main()

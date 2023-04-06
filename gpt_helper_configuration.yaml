@@ -1,0 +1,19 @@
+ignored_directories:
+  - node_modules
+  - .git
+  - .venv
+  - .vscode
+  - dist
+  - build
+  - venv
+  - __pycache__
+
+ignored_files:
+  - .env
+  - .gitignore
+  - .dockerignore
+
+files:
+  - main.py
+  - handlers/*
+  - models/*
