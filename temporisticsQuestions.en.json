@@ -1,6 +1,6 @@
 [
   {
-    "question": "Which of these actions do you prioritize the most?",
+    "question": "How do you prioritize different time perspectives when taking actions?",
     "options": [
       "Planning for the future",
       "Reflecting on the past",
@@ -9,7 +9,7 @@
     ]
   },
   {
-    "question": "When making decisions, which of the following do you rely on most?",
+    "question": "When making decisions, which aspect do you give the most importance to: past experiences, present circumstances or future goals?",
     "options": [
       "Past experiences",
       "Present circumstances",
@@ -18,7 +18,7 @@
     ]
   },
   {
-    "question": "How do you approach your goals?",
+    "question": "How do you approach achieving your goals?",
     "options": [
       "I set long-term goals and work steadily towards them",
       "I focus on immediate tasks and let the future unfold",
@@ -27,7 +27,7 @@
     ]
   },
   {
-    "question": "What best describes your time management style?",
+    "question": "How do you manage your time effectively?",
     "options": [
       "I prioritize tasks based on their deadlines",
       "I focus on one task at a time, regardless of deadlines",
@@ -36,7 +36,7 @@
     ]
   },
   {
-    "question": "Which of these statements best describes you?45674",
+    "question": "Which statement best describes your personality in terms of time management?",
     "options": [
       "I am a planner",
       "I am a doer",
@@ -45,7 +45,7 @@
     ]
   },
   {
-    "question": "Which of these statements best describes you?34834765",
+    "question": "Which statement best describes your approach to planning and executing tasks?",
     "options": [
       "I am a planner",
       "I am a doer",
@@ -54,7 +54,7 @@
     ]
   },
   {
-    "question": "Which of these statements best describes you?457",
+    "question": "How do you perceive your personality when it comes to managing your time?",
     "options": [
       "I am a planner",
       "I am a doer",
@@ -63,57 +63,48 @@
     ]
   },
   {
-    "question": "Which of these statements best describes you?457",
+    "question": "Which statement best describes your general attitude towards time management?",
     "options": [
-      "I am a planner",
-      "I am a doer",
-      "I am a thinker",
-      "I am a balance"
+      "I am proactive and prioritize my time effectively",
+      "I struggle with time management and often feel overwhelmed",
+      "I am reactive and tend to manage my time based on urgent tasks",
+      "I am adaptable and can manage my time effectively in most situations"
     ]
   },
   {
-    "question": "Which of these statements best describes you?45754",
+    "question": "Which of these personality types resonates with your approach to time management?",
     "options": [
-      "I am a planner",
-      "I am a doer",
-      "I am a thinker",
-      "I am a balance"
+      "Perfectionist",
+      "Procrastinator",
+      "Organizer",
+      "Adventurer"
     ]
   },
   {
-    "question": "Which of these statements best describes you?57457",
+    "question": "How do you describe your time management style?",
     "options": [
-      "I am a planner",
-      "I am a doer",
-      "I am a thinker",
-      "I am a balance"
+      "Structured and rigid",
+      "Flexible and adaptable",
+      "Spontaneous and unplanned",
+      "Proactive and strategic"
     ]
   },
   {
-    "question": "Which of these statements best describes you?0987654321",
+    "question": "Which statement describes your attitude towards balancing short-term tasks and long-term goals?",
     "options": [
-      "I am a planner",
-      "I am a doer",
-      "I am a thinker",
-      "I am a balance"
+      "I focus mostly on short-term tasks and leave long-term goals for later",
+      "I prioritize long-term goals over short-term tasks",
+      "I try to balance both short-term tasks and long-term goals",
+      "I don't think about short-term tasks or long-term goals"
     ]
   },
   {
-    "question": "Which of these statements best describes you?12315",
+    "question": "How do you describe your ability to balance different time perspectives in your life?",
     "options": [
-      "I am a planner",
-      "I am a doer",
-      "I am a thinker",
-      "I am a balance"
-    ]
-  },
-  {
-    "question": "Which of these statements best describes you?1231",
-    "options": [
-      "I am a planner",
-      "I am a doer",
-      "I am a thinker",
-      "I am a balance"
+      "I struggle to balance different time perspectives and often find myself focusing too much on one perspective",
+      "I am able to balance different time perspectives fairly well",
+      "I am constantly aware of different time perspectives and make decisions accordingly",
+      "I don't think about different time perspectives"
     ]
   }
 ]
