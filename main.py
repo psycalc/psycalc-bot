@@ -54,15 +54,15 @@ def main():
 
     # Set up the bot
     updater = Updater(token=token, use_context=True)
-    updater.bot_data['questions_list'] = questions_list
-
 
     # Add handlers for commands and messages
     dispatcher = updater.dispatcher
-    dispatcher.add_handler(CommandHandler("start", start))
+    dispatcher.add_handler(CommandHandler("start", start, pass_args=True, pass_job_queue=True))
+
+    # Pass questions_list to CallbackContext
     dispatcher.add_handler(CallbackQueryHandler(handle_response))
-    dispatcher.add_handler(CallbackQueryHandler(
-        show_next_question, pattern='next'))
+    dispatcher.add_handler(CallbackQueryHandler(show_next_question, pass_chat_data=True, pass_user_data=True, pass_job_queue=True, pass_args=[questions_list], pattern='next'))
+
 
     # Start the bot
     updater.start_polling()

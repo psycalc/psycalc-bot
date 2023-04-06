@@ -5,38 +5,40 @@ from globals import user_answers
 from telegram import ParseMode
 
 
-def show_next_question(update: Update, context: CallbackContext, current_question_index: int, current_test_index: int):
-    # Get chat id
-    chat_id = update.effective_chat.id
+def show_next_question(update: Update, context: CallbackContext, current_test_index=None, current_question_index=None):
+    if current_test_index is None:
+        current_test_index = context.chat_data.get('current_test_index', 0)
+    if current_question_index is None:
+        current_question_index = context.chat_data.get('current_question_index', 0)
+    questions_list = context.bot_data.get('questions_list')
 
-    # Get the list of questions from context
-    questions_list = context.bot_data['questions_list']
+    if current_test_index >= len(questions_list):
+        # No more tests
+        update.callback_query.edit_message_text(
+            text="Sorry, there are no more tests available.")
+        return
 
-    # Get current question
-    question = f"{current_question_index+1}. {questions_list[current_test_index][current_question_index]['question']}"
+    questions = questions_list[current_test_index]
 
-    # Get options for current question
-    options = questions_list[current_test_index][current_question_index]["options"]
+    if current_question_index >= len(questions):
+        # No more questions in current test
+        update.callback_query.edit_message_text(
+            text="That's it for this test! Press /start to take another test.")
+        return
 
-    # Create answer option buttons
-    buttons = [[InlineKeyboardButton(option, callback_data=str(
-        index))] for index, option in enumerate(options)]
+    question = questions[current_question_index]
 
-    # Create markup for buttons
-    keyboard = InlineKeyboardMarkup(buttons)
+    # Save state
+    context.chat_data['current_test_index'] = current_test_index
+    context.chat_data['current_question_index'] = current_question_index
 
-    if update.callback_query:
-        if update.callback_query.message.text == question:
-            # If the message is not modified, don't attempt to update it
-            return
+    # Build message text
+    message_text = question["question"] + "\n\n"
+    for i, option in enumerate(question["options"]):
+        message_text += f"<b>{i}</b>. {option}\n"
+    message_text += "\nPlease choose an option by typing /<option_number>."
 
-        # If the message is modified, update the message text
-        update.callback_query.edit_message_text(text=question, reply_markup=keyboard)
-    else:
-        # Display question and answer options in chat
-        update.message.reply_text(text=question, reply_markup=keyboard)
+    # Send message
+    update.callback_query.edit_message_text(
+        text=message_text, parse_mode=ParseMode.HTML)
 
-    # Save the index of the current question for the user
-    user_answers.setdefault(chat_id, {})
-    user_answers[chat_id]["current_question_index"] = current_question_index
-    user_answers[chat_id]["current_test_index"] = current_test_index
