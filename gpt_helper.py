@@ -50,15 +50,23 @@ def main():
     file_paths.sort(key=lambda x: x[1], reverse=True)
 
     # Concatenate the contents of the three most recently modified files into a buffer, taking character count into consideration
-    files = file_paths[:3]
-    contents = [file_content.strip() for file_path, _ in files for file_content in (open(file_path, 'r').read(),) if file_content.strip()]
-    chars = sum(map(len, contents))
-    buffer = ''.join(contents[:max_chars])
+    contents = []
+    chars = 0
+    for file_path, _ in file_paths[:3]:
+        with open(file_path, 'r') as f:
+            file_content = f.read().strip()
+            if file_content:
+                chars += len(file_content)
+                if chars <= max_chars:
+                    contents.append(file_content)
+                else:
+                    break
+    buffer = ''.join(contents)
 
     # Copy buffer to clipboard
     pyperclip.copy(buffer)
-    print(f"Copied {chars} characters from the following {len(files)} files modified within the last 30 minutes:")
-    for file_path, mod_time in files:
+    print(f"Copied {chars} characters from the following {len(contents)} files modified within the last 30 minutes:")
+    for file_path, mod_time in file_paths[:len(contents)]:
         print(f"{file_path} ({mod_time})")
 
 if __name__ == '__main__':
