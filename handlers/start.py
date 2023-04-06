@@ -6,6 +6,7 @@ from handlers.next_question import show_next_question
 
 
 def start(update: Update, context: CallbackContext, questions_list=None):
+    questions_list = context.bot_data.get('questions_list')
     if questions_list is None:
         questions_list = context.bot_data.get('questions_list')
 
@@ -20,8 +21,6 @@ def start(update: Update, context: CallbackContext, questions_list=None):
     context.bot_data['questions_list'] = questions_list
 
     update.message.reply_text(
-        "Hello! I am a bot that helps you determine your psychological type. Answer the questions so I can help you find out your type.")    
+        "Hello! I am a bot that helps you determine your temporistics, psychosophy, and socionics types. Answer the questions so I can help you find out your type.")
     show_next_question(update, context,
                        current_test_index=0, current_question_index=0)
-
-

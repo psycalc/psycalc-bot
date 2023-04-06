@@ -5,22 +5,19 @@ from handlers.next_question import show_next_question
 from globals import user_answers
 from telegram import ParseMode
 
-
-
-
-# Load the list of questions from file
-with open("temporisticsQuestions.en.json", "r", encoding="utf-8") as f:
-    questions = json.load(f)
-
 def handle_response(update: Update, context: CallbackContext):
     query = update.callback_query
-    data = query.data
+    chat_id = query.message.chat_id
+    option_number = int(query.data.split("_")[1])
+
+    # Get the current questions list from context.bot_data
+    questions_list = context.bot_data.get('questions_list')
+    current_test_index = context.chat_data.get('current_test_index', 0)
+    questions = questions_list[current_test_index]
+
     message = query.message
 
     # Get saved state
-    chat_id = update.callback_query.message.chat_id
-    
-    # Initialize user_answers if it doesn't exist for the chat_id
     if chat_id not in user_answers:
         user_answers[chat_id] = {}
 
@@ -29,7 +26,7 @@ def handle_response(update: Update, context: CallbackContext):
 
     # Save user answer
     question_text = questions[current_question_index]["question"]
-    selected_answer_index = int(data)
+    selected_answer_index = option_number - 1  # Adjust the option_number
     selected_answer = questions[current_question_index]["options"][selected_answer_index]
     answers[question_text] = selected_answer
 
@@ -48,3 +45,5 @@ def handle_response(update: Update, context: CallbackContext):
 
         # Clear user answers
         del user_answers[chat_id]
+
+

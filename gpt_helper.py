@@ -60,7 +60,7 @@ def concatenate_files(config: dict, max_chars: int = 10000) -> list:
                     part_number += 1
 
                 if not buffer:
-                    buffer = f"This is my project part {part_number}. "
+                    buffer = f""
                 buffer += file_content
                 included_files.append(file_path.resolve())
 
