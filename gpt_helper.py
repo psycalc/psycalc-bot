@@ -67,7 +67,10 @@ def main():
     pyperclip.copy(buffer)
     print(f"Copied {chars} characters from the following {len(contents)} files modified within the last 30 minutes:")
     for file_path, mod_time in file_paths[:len(contents)]:
-        print(f"{file_path} ({mod_time})")
+        # print(f"{file_path} ({mod_time})")
+        # same as above, but full path
+        full_file_path = os.path.abspath(file_path)
+        print(f"{full_file_path} ({chars})")
 
 if __name__ == '__main__':
     main()
