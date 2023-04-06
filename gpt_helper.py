@@ -1,70 +1,86 @@
-import os
-import pyperclip
 import argparse
 import datetime
+import logging
+import os
+from pathlib import Path
+
+import pyperclip
 import yaml
-import glob
 
-# Load the configuration from the YAML file
-with open("gpt_helper_configuration.yaml", "r") as config_file:
-    config = yaml.safe_load(config_file)
 
-ignored_directories = config["ignored_directories"]
-ignored_files = config["ignored_files"]
-config_files = config["files"]
+def load_config(config_path: Path) -> dict:
+    """Load configuration from the specified file."""
+    with open(config_path, 'r') as f:
+        return yaml.safe_load(f)
 
-# Define a dictionary to store the limitations for different GPT models
-MODEL_LIMITATIONS = {
-    'GPT-3': 4096,
-    'GPT-4': 8192,
-}
 
-def is_file_ignored(file_path):
-    return any(file_path.endswith(ignored_file) for ignored_file in ignored_files)
+def is_file_ignored(file_path: Path, ignored_files: list) -> bool:
+    """Return True if the file should be ignored."""
+    return any(file_path.name.endswith(ignored_file) for ignored_file in ignored_files)
 
-def is_directory_ignored(dir_path):
-    return any(ignored_directory in dir_path.split(os.path.sep) for ignored_directory in ignored_directories)
 
-def get_files_from_config():
-    all_files = []
+def is_directory_ignored(dir_path: Path, ignored_directories: list) -> bool:
+    """Return True if the directory should be ignored."""
+    return any(ignored_directory in dir_path.parts for ignored_directory in ignored_directories)
+
+
+def concatenate_files(config: dict, max_chars: int = 10000) -> list:
+    """Concatenate the contents of the specified files into multiple buffers."""
+    ignored_directories = config["ignored_directories"]
+    ignored_files = config["ignored_files"]
+    config_files = config["files"]
+
+    included_files = []
+    buffers = []
+    buffer = ''
+    part_number = 1
+    before_message = config["before_message"]
+    after_part_message = config["after_part_message"]
+    after_message = config["after_message"]
+
     for file_pattern in config_files:
-        matched_files = glob.glob(file_pattern, recursive=True)
-        all_files.extend(matched_files)
-    return all_files
+        file_paths = list(Path().glob(file_pattern))
+        for file_path in file_paths:
+            if is_file_ignored(file_path, ignored_files) or is_directory_ignored(file_path.parent, ignored_directories):
+                continue
 
-def main():
-    # Parse command-line arguments
-    parser = argparse.ArgumentParser(description='Concatenate the contents of the specified files in the configuration file.')
-    parser.add_argument('-m', '--max-chars', type=int, default=10000, help='the maximum number of characters in the concatenated buffer (default: 10000)')
-    parser.add_argument('-g', '--gpt-model', default='GPT-3', help='the GPT model being used (default: GPT-3)')
-    args = parser.parse_args()
+            with open(file_path, 'r') as f:
+                file_content = f"{file_path.resolve()}\n{f.read()}"
+                if not file_content:
+                    continue
 
-    # Determine the maximum number of characters in the concatenated buffer
-    max_chars = min(MODEL_LIMITATIONS.get(args.gpt_model, 1024), args.max_chars)
+                content_length = len(file_content)
+                buffer_length = len(buffer)
+                part_number_message_length = len(f"This is my project part {part_number}. ")
+                after_part_message_length = len(after_part_message)
 
-    # Get the list of files specified in the config
-    file_paths = get_files_from_config()
+                if buffer_length + content_length + part_number_message_length + after_part_message_length > max_chars:
+                    buffers.append(buffer + f"\n{after_message}")
+                    buffer = ''
+                    part_number += 1
 
-    # Concatenate the contents of the specified files into a buffer, taking character count into consideration
-    contents = []
-    chars = 0
-    for file_path in file_paths:
-        with open(file_path, 'r') as f:
-            file_content = os.path.abspath(file_path) + '\n' + f.read()
-            if file_content:
-                chars += len(file_content)
-                if chars <= max_chars:
-                    contents.append(file_content)
-                else:
-                    break
-    buffer = ''.join(contents)
+                if not buffer:
+                    buffer = f"This is my project part {part_number}. "
+                buffer += file_content
+                included_files.append(file_path.resolve())
 
-    # Copy buffer to clipboard
-    pyperclip.copy(buffer)
-    print(f"Copied {chars} characters from the following {len(contents)} files:")
-    for file_path in file_paths[:len(contents)]:
-        full_file_path = os.path.abspath(file_path)
-        print(f"{full_file_path} ({len(open(file_path).read())})")
+    buffers.append(buffer + f"\n{after_message}")
+
+    # Print information about each buffer and copy it to clipboard
+    for i, buffer in enumerate(buffers):
+        buffer_length = len(buffer)
+        print(f"Part {i + 1}: {buffer_length} characters")
+        pyperclip.copy(buffer)
+        if i < len(buffers) - 1:
+            input("Press enter to copy the next part...")
+
+    return included_files
+
 
 if __name__ == '__main__':
-    main()
+    config_path = Path('gpt_helper_configuration.yaml')
+    config = load_config(config_path)
+    included_files = concatenate_files(config)
+    print("Included files:")
+    for file_path in included_files:
+        print(file_path)
