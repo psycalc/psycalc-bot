@@ -54,7 +54,9 @@ def main():
     chars = 0
     for file_path, _ in file_paths[:3]:
         with open(file_path, 'r') as f:
-            file_content = f.read()
+            # file_content = f.read()
+            # same as above, but first line full path
+            file_content = os.path.abspath(file_path) + '\n' + f.read()
             if file_content:
                 chars += len(file_content)
                 if chars <= max_chars:
