@@ -5,21 +5,18 @@ from globals import user_answers
 from telegram import ParseMode
 
 
-# Load the list of questions from file
-with open("temporisticsQuestions.en.json", "r", encoding="utf-8") as f:
-    questions = json.load(f)
-
-
-def show_next_question(update: Update, context: CallbackContext, current_question_index: int):
+def show_next_question(update: Update, context: CallbackContext, current_question_index: int, current_test_index: int):
     # Get chat id
     chat_id = update.effective_chat.id
 
-    # Get current question
-    question = f"{current_question_index+1}. {questions[current_question_index]['question']}"
+    # Get the list of questions from context
+    questions_list = context.bot_data['questions_list']
 
+    # Get current question
+    question = f"{current_question_index+1}. {questions_list[current_test_index][current_question_index]['question']}"
 
     # Get options for current question
-    options = questions[current_question_index]["options"]
+    options = questions_list[current_test_index][current_question_index]["options"]
 
     # Create answer option buttons
     buttons = [[InlineKeyboardButton(option, callback_data=str(
@@ -42,4 +39,4 @@ def show_next_question(update: Update, context: CallbackContext, current_questio
     # Save the index of the current question for the user
     user_answers.setdefault(chat_id, {})
     user_answers[chat_id]["current_question_index"] = current_question_index
-
+    user_answers[chat_id]["current_test_index"] = current_test_index

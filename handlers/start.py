@@ -4,7 +4,8 @@ from telegram.ext import CallbackContext
 
 from handlers.next_question import show_next_question
 
-def start(update: Update, context: CallbackContext):
+
+def start(update: Update, context: CallbackContext, current_test_index=0):
     # Get chat id
     chat_id = update.effective_chat.id
 
@@ -12,5 +13,7 @@ def start(update: Update, context: CallbackContext):
     if chat_id in user_answers:
         del user_answers[chat_id]
 
-    update.message.reply_text("Hello! I am a bot that helps you determine your psychological type. Answer the questions so I can help you find out your type.")
-    show_next_question(update, context, current_question_index=0)
+    update.message.reply_text(
+        "Hello! I am a bot that helps you determine your psychological type. Answer the questions so I can help you find out your type.")
+    show_next_question(update, context,
+                       current_question_index=0, current_test_index=current_test_index)
