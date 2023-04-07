@@ -1,105 +1,107 @@
-[
-  {
-    "question": "How do you prioritize different time perspectives when taking actions?",
-    "options": [
-      "Planning for the future",
-      "Reflecting on the past",
-      "Focusing on the present",
-      "Balancing all time perspectives"
-    ]
-  },
-  {
-    "question": "When making decisions, which aspect do you give the most importance to: past experiences, present circumstances or future goals?",
-    "options": [
-      "Past experiences",
-      "Present circumstances",
-      "Future goals",
-      "A combination of all three"
-    ]
-  },
-  {
-    "question": "How do you approach achieving your goals?",
-    "options": [
-      "I set long-term goals and work steadily towards them",
-      "I focus on immediate tasks and let the future unfold",
-      "I learn from my past experiences to make better decisions",
-      "I constantly balance my past, present, and future"
-    ]
-  },
-  {
-    "question": "How do you manage your time effectively?",
-    "options": [
-      "I prioritize tasks based on their deadlines",
-      "I focus on one task at a time, regardless of deadlines",
-      "I prioritize tasks based on their long-term impact",
-      "I maintain a balance between urgent and important tasks"
-    ]
-  },
-  {
-    "question": "Which statement best describes your personality in terms of time management?",
-    "options": [
-      "I am a planner",
-      "I am a doer",
-      "I am a thinker",
-      "I am a balance"
-    ]
-  },
-  {
-    "question": "Which statement best describes your approach to planning and executing tasks?",
-    "options": [
-      "I am a planner",
-      "I am a doer",
-      "I am a thinker",
-      "I am a balance"
-    ]
-  },
-  {
-    "question": "How do you perceive your personality when it comes to managing your time?",
-    "options": [
-      "I am a planner",
-      "I am a doer",
-      "I am a thinker",
-      "I am a balance"
-    ]
-  },
-  {
-    "question": "Which statement best describes your general attitude towards time management?",
-    "options": [
-      "I am proactive and prioritize my time effectively",
-      "I struggle with time management and often feel overwhelmed",
-      "I am reactive and tend to manage my time based on urgent tasks",
-      "I am adaptable and can manage my time effectively in most situations"
-    ]
-  },
-  {
-    "question": "Which of these personality types resonates with your approach to time management?",
-    "options": [
-      "Perfectionist",
-      "Procrastinator",
-      "Organizer",
-      "Adventurer"
-    ]
-  },
-  {
-    "question": "How do you describe your time management style?",
-    "options": [
-      "Structured and rigid",
-      "Flexible and adaptable",
-      "Spontaneous and unplanned",
-      "Proactive and strategic"
-    ]
-  },
-  {
-    "question": "Which statement describes your attitude towards balancing short-term tasks and long-term goals?",
-    "options": [
-      "I focus mostly on short-term tasks and leave long-term goals for later",
-      "I prioritize long-term goals over short-term tasks",
-      "I try to balance both short-term tasks and long-term goals",
-      "I don't think about short-term tasks or long-term goals"
-    ]
-  },
-  {
-    "question": "How do you describe your ability to balance different time perspectives in your life?",
+{
+  "typology": "Temporistics",
+  "questions": [
+    {
+      "title": "How do you prioritize different time perspectives when taking actions?",
+      "options": [
+        "Planning for the future",
+        "Reflecting on the past",
+        "Focusing on the present",
+        "Balancing all time perspectives"
+      ]
+    },
+    {
+      "title": "When making decisions, which aspect do you give the most importance to: past experiences, present circumstances or future goals?",
+      "options": [
+        "Past experiences",
+        "Present circumstances",
+        "Future goals",
+        "A combination of all three"
+      ]
+    },
+    {
+      "title": "How do you approach achieving your goals?",
+      "options": [
+        "I set long-term goals and work steadily towards them",
+        "I focus on immediate tasks and let the future unfold",
+        "I learn from my past experiences to make better decisions",
+        "I constantly balance my past, present, and future"
+      ]
+    },
+    {
+      "title": "How do you manage your time effectively?",
+      "options": [
+        "I prioritize tasks based on their deadlines",
+        "I focus on one task at a time, regardless of deadlines",
+        "I prioritize tasks based on their long-term impact",
+        "I maintain a balance between urgent and important tasks"
+      ]
+    },
+    {
+      "title": "Which statement best describes your personality in terms of time management?",
+      "options": [
+        "I am a planner",
+        "I am a doer",
+        "I am a thinker",
+        "I am a balance"
+      ]
+    },
+    {
+      "title": "Which statement best describes your approach to planning and executing tasks?",
+      "options": [
+        "I am a planner",
+        "I am a doer",
+        "I am a thinker",
+        "I am a balance"
+      ]
+    },
+    {
+      "title": "How do you perceive your personality when it comes to managing your time?",
+      "options": [
+        "I am a planner",
+        "I am a doer",
+        "I am a thinker",
+        "I am a balance"
+      ]
+    },
+    {
+      "title": "Which statement best describes your general attitude towards time management?",
+      "options": [
+        "I am proactive and prioritize my time effectively",
+        "I struggle with time management and often feel overwhelmed",
+        "I am reactive and tend to manage my time based on urgent tasks",
+        "I am adaptable and can manage my time effectively in most situations"
+      ]
+    },
+    {
+      "title": "Which of these personality types resonates with your approach to time management?",
+      "options": [
+        "Perfectionist",
+        "Procrastinator",
+        "Organizer",
+        "Adventurer"
+      ]
+    },
+    {
+      "title": "How do you describe your time management style?",
+      "options": [
+        "Structured and rigid",
+        "Flexible and adaptable",
+        "Spontaneous and unplanned",
+        "Proactive and strategic"
+      ]
+    },
+    {
+      "title": "Which statement describes your attitude towards balancing short-term tasks and long-term goals?",
+      "options": [
+        "I focus mostly on short-term tasks and leave long-term goals for later",
+        "I prioritize long-term goals over short-term tasks",
+        "I try to balance both short-term tasks and long-term goals",
+        "I don't think about short-term tasks or long-term goals"
+      ]
+    },
+    {
+    "title": "How do you describe your ability to balance different time perspectives in your life?",
     "options": [
       "I struggle to balance different time perspectives and often find myself focusing too much on one perspective",
       "I am able to balance different time perspectives fairly well",
@@ -108,3 +110,4 @@
     ]
   }
 ]
+}

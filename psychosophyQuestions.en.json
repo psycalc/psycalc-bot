@@ -1,119 +1,68 @@
-[
-  {
-    "question": "Which of these actions do you prioritize the most?",
-    "options": [
-      "Planning for the future",
-      "Reflecting on the past",
-      "Focusing on the present",
-      "Balancing all time perspectives"
-    ]
-  },
-  {
-    "question": "When making decisions, which of the following do you rely on most?",
-    "options": [
-      "Past experiences",
-      "Present circumstances",
-      "Future goals",
-      "A combination of all three"
-    ]
-  },
-  {
-    "question": "How do you approach your goals?",
-    "options": [
-      "I set long-term goals and work steadily towards them",
-      "I focus on immediate tasks and let the future unfold",
-      "I learn from my past experiences to make better decisions",
-      "I constantly balance my past, present, and future"
-    ]
-  },
-  {
-    "question": "What best describes your time management style?",
-    "options": [
-      "I prioritize tasks based on their deadlines",
-      "I focus on one task at a time, regardless of deadlines",
-      "I prioritize tasks based on their long-term impact",
-      "I maintain a balance between urgent and important tasks"
-    ]
-  },
-  {
-    "question": "Which of these statements best describes you?",
-    "options": [
-      "I am a planner",
-      "I am a doer",
-      "I am a thinker",
-      "I am a balance"
-    ]
-  },
-  {
-    "question": "Which of these statements best describes you?",
-    "options": [
-      "I am a planner",
-      "I am a doer",
-      "I am a thinker",
-      "I am a balance"
-    ]
-  },
-  {
-    "question": "Which of these statements best describes you?",
-    "options": [
-      "I am a planner",
-      "I am a doer",
-      "I am a thinker",
-      "I am a balance"
-    ]
-  },
-  {
-    "question": "Which of these statements best describes you?",
-    "options": [
-      "I am a planner",
-      "I am a doer",
-      "I am a thinker",
-      "I am a balance"
-    ]
-  },
-  {
-    "question": "Which of these statements best describes you?",
-    "options": [
-      "I am a planner",
-      "I am a doer",
-      "I am a thinker",
-      "I am a balance"
-    ]
-  },
-  {
-    "question": "Which of these statements best describes you?",
-    "options": [
-      "I am a planner",
-      "I am a doer",
-      "I am a thinker",
-      "I am a balance"
-    ]
-  },
-  {
-    "question": "Which of these statements best describes you?",
-    "options": [
-      "I am a planner",
-      "I am a doer",
-      "I am a thinker",
-      "I am a balance"
-    ]
-  },
-  {
-    "question": "Which of these statements best describes you?",
-    "options": [
-      "I am a planner",
-      "I am a doer",
-      "I am a thinker",
-      "I am a balance"
-    ]
-  },
-  {
-    "question": "Which of these statements best describes you?",
-    "options": [
-      "I am a planner",
-      "I am a doer",
-      "I am a thinker",
-      "I am a balance"
-    ]
-  }
-]
+{
+  "typology": "Psychosophy",
+  "questions": [
+    {
+      "title": "How do you handle challenging situations?",
+      "options": [
+        "I rely on logic and reason to find solutions",
+        "I trust my intuition and feelings",
+        "I seek guidance from others",
+        "I adapt my approach depending on the situation"
+      ]
+    },
+    {
+      "title": "When making decisions, do you usually:",
+      "options": [
+        "Consider all available information and analyze it",
+        "Go with your gut feeling",
+        "Ask for advice from friends, family or colleagues",
+        "Take into account both objective information and personal feelings"
+      ]
+    },
+    {
+      "title": "How do you perceive yourself in social interactions?",
+      "options": [
+        "Introverted and reserved",
+        "Extroverted and outgoing",
+        "A mix of both introverted and extroverted",
+        "It depends on the situation and the people I'm with"
+      ]
+    },
+    {
+      "title": "How do you prefer to spend your free time?",
+      "options": [
+        "Engaging in intellectual pursuits or hobbies",
+        "Spending time with close friends or family",
+        "Enjoying solitary activities or relaxation",
+        "A balance of socializing and solitary activities"
+      ]
+    },
+    {
+      "title": "How do you approach problem-solving?",
+      "options": [
+        "I analyze the problem and look for logical solutions",
+        "I rely on my intuition and emotions to guide me",
+        "I seek input from others and consider their perspectives",
+        "I use a combination of logic, intuition, and input from others"
+      ]
+    },
+    {
+      "title": "What is your preferred learning style?",
+      "options": [
+        "Reading, writing, and researching",
+        "Listening, discussing, and collaborating",
+        "Hands-on and experiential learning",
+        "A combination of various learning styles"
+      ]
+    },
+    {
+      "title": "How do you express your emotions?",
+      "options": [
+        "I'm open and transparent about my feelings",
+        "I tend to keep my emotions to myself",
+        "I share my emotions with only a few close people",
+        "It depends on the situation and the people I'm with"
+      ]
+    }
+  ]
+}

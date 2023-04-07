@@ -39,9 +39,10 @@ def handle_response(update: Update, context: CallbackContext, option_number: int
 
     message = query.message
 
+
     chat_data = user_answers.get_chat_data(chat_id)
     current_question_index = chat_data["current_question_index"]
-    question_text = questions[current_question_index]["question"]
+    question_text = questions[current_question_index]["title"]
     selected_answer_index = option_number - 1  # Adjust the option_number
     selected_answer = questions[current_question_index]["options"][selected_answer_index]
     user_answers.save_answer(chat_id, question_text, selected_answer)
@@ -52,11 +53,22 @@ def handle_response(update: Update, context: CallbackContext, option_number: int
         user_answers.increment_question_index(chat_id)
         show_next_question(update, context, current_question_index=current_question_index + 1)
     else:
-        # Display result
-        result = "Psychological type:\n\n"
+        # Display result for the current typology
+        typology = questions[0].get('typology', 'Unknown Typology')
+        result = f"{typology} type:\n\n"
         result += '\n'.join(f"{q['question']}: {user_answers.answers[chat_id][q['question']]}" for q in questions)
 
         message.reply_text(result, parse_mode=ParseMode.HTML)
 
-        # Clear user answers
-        del user_answers.answers[chat_id]
+        # Clear user answers for the current typology
+        for q in questions:
+            del user_answers.answers[chat_id][q['question']]
+
+        # Move to the next typology
+        if current_test_index + 1 < len(questions_list):
+            context.chat_data['current_test_index'] = current_test_index + 1
+            context.chat_data['current_question_index'] = 0
+            show_next_question(update, context)
+        else:
+            # No more typologies, clear user answers
+            del user_answers.answers[chat_id]

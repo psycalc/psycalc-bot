@@ -1,119 +1,68 @@
-[
-  {
-    "question": "Which of these actions do you prioritize the most?",
-    "options": [
-      "Planning for the future",
-      "Reflecting on the past",
-      "Focusing on the present",
-      "Balancing all time perspectives"
-    ]
-  },
-  {
-    "question": "When making decisions, which of the following do you rely on most?",
-    "options": [
-      "Past experiences",
-      "Present circumstances",
-      "Future goals",
-      "A combination of all three"
-    ]
-  },
-  {
-    "question": "How do you approach your goals?",
-    "options": [
-      "I set long-term goals and work steadily towards them",
-      "I focus on immediate tasks and let the future unfold",
-      "I learn from my past experiences to make better decisions",
-      "I constantly balance my past, present, and future"
-    ]
-  },
-  {
-    "question": "What best describes your time management style?",
-    "options": [
-      "I prioritize tasks based on their deadlines",
-      "I focus on one task at a time, regardless of deadlines",
-      "I prioritize tasks based on their long-term impact",
-      "I maintain a balance between urgent and important tasks"
-    ]
-  },
-  {
-    "question": "Which of these statements best describes you?",
-    "options": [
-      "I am a planner",
-      "I am a doer",
-      "I am a thinker",
-      "I am a balance"
-    ]
-  },
-  {
-    "question": "Which of these statements best describes you?",
-    "options": [
-      "I am a planner",
-      "I am a doer",
-      "I am a thinker",
-      "I am a balance"
-    ]
-  },
-  {
-    "question": "Which of these statements best describes you?",
-    "options": [
-      "I am a planner",
-      "I am a doer",
-      "I am a thinker",
-      "I am a balance"
-    ]
-  },
-  {
-    "question": "Which of these statements best describes you?",
-    "options": [
-      "I am a planner",
-      "I am a doer",
-      "I am a thinker",
-      "I am a balance"
-    ]
-  },
-  {
-    "question": "Which of these statements best describes you?",
-    "options": [
-      "I am a planner",
-      "I am a doer",
-      "I am a thinker",
-      "I am a balance"
-    ]
-  },
-  {
-    "question": "Which of these statements best describes you?",
-    "options": [
-      "I am a planner",
-      "I am a doer",
-      "I am a thinker",
-      "I am a balance"
-    ]
-  },
-  {
-    "question": "Which of these statements best describes you?",
-    "options": [
-      "I am a planner",
-      "I am a doer",
-      "I am a thinker",
-      "I am a balance"
-    ]
-  },
-  {
-    "question": "Which of these statements best describes you?",
-    "options": [
-      "I am a planner",
-      "I am a doer",
-      "I am a thinker",
-      "I am a balance"
-    ]
-  },
-  {
-    "question": "Which of these statements best describes you?",
-    "options": [
-      "I am a planner",
-      "I am a doer",
-      "I am a thinker",
-      "I am a balance"
-    ]
-  }
-]
+{
+  "typology": "Socionics",
+  "questions": [
+    {
+      "title": "How do you approach conflicts or disagreements?",
+      "options": [
+        "I prefer to calmly discuss and analyze the situation",
+        "I express my emotions openly and address the issue head-on",
+        "I try to avoid conflicts and maintain harmony",
+        "My approach varies depending on the situation and the people involved"
+      ]
+    },
+    {
+      "title": "When working in a team, do you:",
+      "options": [
+        "Take charge and lead the group",
+        "Offer support and encouragement to others",
+        "Focus on completing your own tasks efficiently",
+        "Adapt your role depending on the team's needs"
+      ]
+    },
+    {
+      "title": "How do you prefer to communicate with others?",
+      "options": [
+        "Directly and straightforwardly",
+        "With empathy and understanding",
+        "By focusing on the facts and logical arguments",
+        "I adjust my communication style based on the situation and the person"
+      ]
+    },
+    {
+      "title": "When planning your future, do you:",
+      "options": [
+        "Set clear goals and work systematically towards them",
+        "Allow room for flexibility and spontaneity",
+        "Focus on maintaining stability and security",
+        "Balance long-term planning with adaptability to change"
+      ]
+    },
+    {
+      "title": "What is most important to you in a friendship?",
+      "options": [
+        "Loyalty and trust",
+        "Intellectual stimulation and shared interests",
+        "Emotional support and understanding",
+        "Fun and shared experiences"
+      ]
+    },
+    {
+      "title": "How do you cope with stress or difficult situations?",
+      "options": [
+        "I analyze the situation and find practical solutions",
+        "I rely on my intuition and emotions to guide me",
+        "I seek support and advice from others",
+        "I adapt my coping strategies depending on the situation"
+      ]
+    },
+    {
+      "title": "Which of the following best describes your decision-making style?",
+      "options": [
+        "Logical and objective",
+        "Emotionally driven and instinctive",
+        "Pragmatic and focused on practical outcomes",
+        "A combination of logic, emotion, and practical considerations"
+      ]
+    }
+  ]
+}
