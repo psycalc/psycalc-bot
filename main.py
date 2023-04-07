@@ -10,6 +10,7 @@ from handlers.handle_response import handle_response_wrapper
 from handlers.next_question import show_next_question
 from telegram import Update
 from telegram.ext import CallbackContext
+import traceback
 
 import requests
 
@@ -17,6 +18,8 @@ import requests
 def download_file_from_github(file_url: str) -> str:
     response = requests.get(file_url)
     if response.status_code == 200:
+        # debug response.text
+        # logger.info(f"Response text: {response.text}")
         return response.text
     raise Exception(f'Error downloading file: {response.status_code}')
 
@@ -49,6 +52,13 @@ def handle_user_input(update: Update, context: CallbackContext):
 
 def error_handler(update: Update, context: CallbackContext):
     logger.error(f"Error occurred: {context.error}")
+    
+    # Print out update and context for debugging purposes
+    print(f"Update: {update}")
+    print(f"Context: {context}")
+    
+    # Print out stack trace for detailed error information
+    traceback.print_exc()
     
     if update and update.message:
         update.message.reply_text("Sorry, something went wrong. Please try again later.")
@@ -84,12 +94,14 @@ def main():
 
     # Add handlers for commands and messages
     dispatcher = updater.dispatcher
+    # debug questions_list
+    logger.info(f"questions_list: {questions_list}")
     dispatcher.bot_data['questions_list'] = questions_list
     dispatcher.add_handler(CommandHandler(
         "start", start, pass_args=True, pass_job_queue=True))
 
     # Pass questions_list to CallbackContext
-    dispatcher.add_handler(CallbackQueryHandler(handle_response_wrapper, pattern='^option_'))
+    dispatcher.add_handler(CallbackQueryHandler(handle_response_wrapper, pass_user_data=True, pattern='^option_'))
     dispatcher.add_handler(CallbackQueryHandler(
         show_next_question, pass_chat_data=True, pass_user_data=True, pass_job_queue=True, pattern='next'))
 

@@ -3,6 +3,7 @@ from telegram import Update
 from telegram.ext import CallbackContext
 from handlers.next_question import show_next_question
 from telegram import ParseMode
+import logging as logger
 
 
 class UserAnswers:
@@ -26,31 +27,31 @@ def handle_response_wrapper(update: Update, context: CallbackContext):
     try:
         query = update.callback_query
         option_number = int(query.data.split("_")[1])
-        handle_response(update, context, option_number)
+        handle_response(update, context, option_number, context.bot_data)
     except Exception as e:
         import traceback
         print("Error occurred:", e)
         traceback.print_exc()
-
     
 
-def handle_response(update: Update, context: CallbackContext, option_number: int):
+def handle_response(update: Update, context: CallbackContext, option_number: int, bot_data: dict):
     query = update.callback_query
     chat_id = query.message.chat_id
 
-    # Get the current questions list from context.bot_data
-    questions_list = context.bot_data.get('questions_list')
-    current_test_index = context.chat_data.get('current_test_index')
-    if current_test_index is None:
-        current_test_index = 0
-
-    questions = questions_list[current_test_index]
+    # Get the current questions list from bot_data
+    questions_list = bot_data.get('questions_list')
+    # debug questions_list
+    # logger.info(f"Questions list: {questions_list}")
+    current_test_index = context.chat_data.get('current_test_index', 0)
+    questions = questions_list[current_test_index]['questions']
 
     message = query.message
-
+    logger.info(f"Callback query message: {message}")
 
     chat_data = user_answers.get_chat_data(chat_id)
-    current_question_index = chat_data["current_question_index"]
+    current_question_index = chat_data.setdefault("current_question_index", 0)
+    logger.info(f"Current question index: {current_question_index}")
+
     question_text = questions[current_question_index]["title"]
     selected_answer_index = option_number - 1  # Adjust the option_number
     selected_answer = questions[current_question_index]["options"][selected_answer_index]
@@ -65,7 +66,7 @@ def handle_response(update: Update, context: CallbackContext, option_number: int
         # Display result for the current typology
         typology = questions[0].get('typology', 'Unknown Typology')
         result = f"{typology} type:\n\n"
-        result += '\n'.join(f"{q['question']}: {user_answers.answers[chat_id][q['question']]}" for q in questions)
+        result += '\n'.join(f"{q['title']}: {user_answers.answers[chat_id][q['title']]}" for q in questions)
 
         message.reply_text(result, parse_mode=ParseMode.HTML)
 

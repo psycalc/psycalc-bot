@@ -6,12 +6,10 @@ from telegram import ParseMode
 
 
 def show_next_question(update: Update, context: CallbackContext, current_test_index=None, current_question_index=None):
-    if current_test_index is None:
-        current_test_index = context.chat_data.get('current_test_index', 0)
-    if current_question_index is None:
-        current_question_index = context.chat_data.get('current_question_index', 0)
     questions_list = context.bot_data.get('questions_list')
 
+    if current_test_index is None:
+        current_test_index = context.chat_data.get('current_test_index', 0)
     if current_test_index >= len(questions_list):
         # No more tests
         if update.callback_query:
@@ -21,8 +19,12 @@ def show_next_question(update: Update, context: CallbackContext, current_test_in
                 text="Sorry, there are no more tests available.")
         return
 
-    questions = questions_list[current_test_index]
+    questions = questions_list[current_test_index]['questions']
+    # Debug output to see the value of 'questions'
+    print(f"DEBUG: questions={questions}")
 
+    if current_question_index is None:
+        current_question_index = context.chat_data.get('current_question_index', 0)
     if current_question_index >= len(questions):
         # No more questions in current test
         if update.callback_query:
@@ -41,7 +43,7 @@ def show_next_question(update: Update, context: CallbackContext, current_test_in
     # Build message text
     message_text = f'<b>Test #{current_test_index + 1}</b>\n' \
                 f'<b>Question #{current_question_index + 1}</b>\n' \
-                f'{question["question"]}\n\n'
+                f'{question["title"]}\n\n'
 
     # Build options as inline keyboard buttons
     keyboard = []
@@ -69,4 +71,3 @@ def show_next_question(update: Update, context: CallbackContext, current_test_in
     else:
         update.message.reply_text(
             text=message_text, reply_markup=reply_markup, parse_mode=ParseMode.HTML)
-
