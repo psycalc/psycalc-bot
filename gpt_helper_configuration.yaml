@@ -15,6 +15,7 @@ ignored_files:
 
 files:
   - main.py
+  - globals.py
   - handlers/start.py
   - handlers/next_question.py
   - handlers\handle_response.py

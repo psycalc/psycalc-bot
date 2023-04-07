@@ -2,13 +2,35 @@ import json
 from telegram import Update
 from telegram.ext import CallbackContext
 from handlers.next_question import show_next_question
-from globals import user_answers
 from telegram import ParseMode
 
-def handle_response(update: Update, context: CallbackContext):
+
+class UserAnswers:
+    def __init__(self):
+        self.answers = {}
+
+    def get_chat_data(self, chat_id: int):
+        return self.answers.setdefault(chat_id, {"current_question_index": 0})
+
+    def save_answer(self, chat_id: int, question_text: str, selected_answer: str):
+        self.answers[chat_id][question_text] = selected_answer
+
+    def increment_question_index(self, chat_id: int):
+        self.answers[chat_id]["current_question_index"] += 1
+
+
+user_answers = UserAnswers()
+
+
+def handle_response_wrapper(update: Update, context: CallbackContext):
+    query = update.callback_query
+    option_number = int(query.data.split("_")[1])
+    handle_response(update, context, option_number)
+    
+
+def handle_response(update: Update, context: CallbackContext, option_number: int):
     query = update.callback_query
     chat_id = query.message.chat_id
-    option_number = int(query.data.split("_")[1])
 
     # Get the current questions list from context.bot_data
     questions_list = context.bot_data.get('questions_list')
@@ -17,33 +39,24 @@ def handle_response(update: Update, context: CallbackContext):
 
     message = query.message
 
-    # Get saved state
-    if chat_id not in user_answers:
-        user_answers[chat_id] = {}
-
-    current_question_index = user_answers[chat_id].get("current_question_index", 0)
-    answers = user_answers[chat_id]
-
-    # Save user answer
+    chat_data = user_answers.get_chat_data(chat_id)
+    current_question_index = chat_data["current_question_index"]
     question_text = questions[current_question_index]["question"]
     selected_answer_index = option_number - 1  # Adjust the option_number
     selected_answer = questions[current_question_index]["options"][selected_answer_index]
-    answers[question_text] = selected_answer
+    user_answers.save_answer(chat_id, question_text, selected_answer)
 
     # Show next question or result
     if current_question_index + 1 < len(questions):
         # Display next question
+        user_answers.increment_question_index(chat_id)
         show_next_question(update, context, current_question_index=current_question_index + 1)
     else:
         # Display result
         result = "Psychological type:\n\n"
-        for q in questions:
-            answer = user_answers[chat_id][q["question"]]
-            result += f"{q['question']}: {answer}\n"
+        result += '\n'.join(f"{q['question']}: {user_answers.answers[chat_id][q['question']]}" for q in questions)
 
         message.reply_text(result, parse_mode=ParseMode.HTML)
 
         # Clear user answers
-        del user_answers[chat_id]
-
-
+        del user_answers.answers[chat_id]

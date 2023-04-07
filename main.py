@@ -1,26 +1,24 @@
-import logging
 import os
 import json
+import logging as logger
 from dotenv import load_dotenv
 from telegram import ParseMode
 from telegram.ext import Updater, CommandHandler, CallbackQueryHandler, MessageHandler, Filters
 
 from handlers.start import start
-from handlers.handle_response import handle_response
+from handlers.handle_response import handle_response_wrapper
 from handlers.next_question import show_next_question
 from telegram import Update
 from telegram.ext import CallbackContext
 
-
 import requests
 
 
-def download_file_from_github(file_url):
+def download_file_from_github(file_url: str) -> str:
     response = requests.get(file_url)
     if response.status_code == 200:
         return response.text
-    else:
-        raise Exception(f'Error downloading file: {response.status_code}')
+    raise Exception(f'Error downloading file: {response.status_code}')
 
 
 def load_tests_from_json(json_data):
@@ -28,13 +26,8 @@ def load_tests_from_json(json_data):
     return tests
 
 
-logging.basicConfig(level=logging.INFO,
-                    format="%(asctime)s [%(levelname)s] %(message)s")
-
-
-def load_questions(filename):
-    with open(filename, "r", encoding="utf-8") as file:
-        return json.load(file)
+logger.basicConfig(level=logger.INFO,
+                   format="%(asctime)s [%(levelname)s] %(message)s")
 
 
 def handle_user_input(update: Update, context: CallbackContext):
@@ -54,13 +47,16 @@ def handle_user_input(update: Update, context: CallbackContext):
         update.message.reply_text(
             "Please type /<option_number> to choose an option or /skip to skip the question.")
 
-def error_handler(update, context):
-    """Log the error and send a message to the user."""
-    if update is None:
-        logging.warning("Update object is None.")
-        return
-    logging.warning(f'Update {update} caused error {context.error}')
-    update.message.reply_text("Sorry, something went wrong. Please try again later.")
+def error_handler(update: Update, context: CallbackContext):
+    logger.error(f"Error occurred: {context.error}")
+    
+    if update and update.message:
+        update.message.reply_text("Sorry, something went wrong. Please try again later.")
+    elif update and update.callback_query:
+        update.callback_query.answer("Sorry, something went wrong. Please try again later.")
+    else:
+        logger.error("Cannot send a message: update.message and update.callback_query are None")
+
 
 
 
@@ -93,7 +89,7 @@ def main():
         "start", start, pass_args=True, pass_job_queue=True))
 
     # Pass questions_list to CallbackContext
-    dispatcher.add_handler(CallbackQueryHandler(handle_response))
+    dispatcher.add_handler(CallbackQueryHandler(handle_response_wrapper, pattern='^option_'))
     dispatcher.add_handler(CallbackQueryHandler(
         show_next_question, pass_chat_data=True, pass_user_data=True, pass_job_queue=True, pattern='next'))
 
@@ -101,7 +97,6 @@ def main():
     dispatcher.add_handler(MessageHandler(
         Filters.text & ~Filters.command, handle_user_input))
     # Add handler for button callbacks
-    dispatcher.add_handler(CallbackQueryHandler(handle_response, pattern='^option_'))
     # Add error handler to dispatcher
     dispatcher.add_error_handler(error_handler)
 

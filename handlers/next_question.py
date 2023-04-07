@@ -15,8 +15,7 @@ def show_next_question(update: Update, context: CallbackContext, current_test_in
     if current_test_index >= len(questions_list):
         # No more tests
         if update.callback_query:
-            update.callback_query.edit_message_text(
-                text="Sorry, there are no more tests available.")
+            update.callback_query.answer()
         else:
             update.message.reply_text(
                 text="Sorry, there are no more tests available.")
@@ -27,21 +26,13 @@ def show_next_question(update: Update, context: CallbackContext, current_test_in
     if current_question_index >= len(questions):
         # No more questions in current test
         if update.callback_query:
-            update.callback_query.edit_message_text(
-                text="That's it for this test! Press /start to take another test.")
+            update.callback_query.answer()
         else:
             update.message.reply_text(
                 text="That's it for this test! Press /start to take another test.")
         return
 
     question = questions[current_question_index]
-
-    # Check if the user has already answered this question
-    chat_id = update.effective_chat.id
-    user_id = update.effective_user.id
-    if user_answers.get(chat_id, {}).get(user_id, {}).get(current_test_index, {}).get(current_question_index):
-        # User has already answered this question, do not update the message
-        return
 
     # Save state
     context.chat_data['current_test_index'] = current_test_index
@@ -59,14 +50,23 @@ def show_next_question(update: Update, context: CallbackContext, current_test_in
 
     reply_markup = InlineKeyboardMarkup(keyboard)
 
-    # Send message
+    # Check if the user has clicked the same option before
+    user_id = update.effective_user.id
+    last_clicked_option = user_answers.get(user_id, {}).get('last_clicked_option')
+    current_option = f"option_{current_question_index + 1}"
+    if update.callback_query and last_clicked_option == current_option:
+        update.callback_query.answer()
+        return
+
+    # Save the clicked option
+    if not user_answers.get(user_id):
+        user_answers[user_id] = {}
+    user_answers[user_id]['last_clicked_option'] = current_option
+
     if update.callback_query:
         update.callback_query.edit_message_text(
             text=message_text, reply_markup=reply_markup, parse_mode=ParseMode.HTML)
     else:
         update.message.reply_text(
             text=message_text, reply_markup=reply_markup, parse_mode=ParseMode.HTML)
-
-
-
 
