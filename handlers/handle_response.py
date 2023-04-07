@@ -23,9 +23,15 @@ user_answers = UserAnswers()
 
 
 def handle_response_wrapper(update: Update, context: CallbackContext):
-    query = update.callback_query
-    option_number = int(query.data.split("_")[1])
-    handle_response(update, context, option_number)
+    try:
+        query = update.callback_query
+        option_number = int(query.data.split("_")[1])
+        handle_response(update, context, option_number)
+    except Exception as e:
+        import traceback
+        print("Error occurred:", e)
+        traceback.print_exc()
+
     
 
 def handle_response(update: Update, context: CallbackContext, option_number: int):
@@ -34,7 +40,10 @@ def handle_response(update: Update, context: CallbackContext, option_number: int
 
     # Get the current questions list from context.bot_data
     questions_list = context.bot_data.get('questions_list')
-    current_test_index = context.chat_data.get('current_test_index', 0)
+    current_test_index = context.chat_data.get('current_test_index')
+    if current_test_index is None:
+        current_test_index = 0
+
     questions = questions_list[current_test_index]
 
     message = query.message
