@@ -4,6 +4,7 @@ from telegram.ext import CallbackContext
 from handlers.next_question import show_next_question
 from telegram import ParseMode
 import logging as logger
+from telegram import InlineKeyboardButton, InlineKeyboardMarkup
 
 
 class UserAnswers:
@@ -40,17 +41,13 @@ def handle_response(update: Update, context: CallbackContext, option_number: int
 
     # Get the current questions list from bot_data
     questions_list = bot_data.get('questions_list')
-    # debug questions_list
-    # logger.info(f"Questions list: {questions_list}")
     current_test_index = context.chat_data.get('current_test_index', 0)
     questions = questions_list[current_test_index]['questions']
 
     message = query.message
-    logger.info(f"Callback query message: {message}")
 
     chat_data = user_answers.get_chat_data(chat_id)
     current_question_index = chat_data.setdefault("current_question_index", 0)
-    logger.info(f"Current question index: {current_question_index}")
 
     question_text = questions[current_question_index]["title"]
     selected_answer_index = option_number - 1  # Adjust the option_number
@@ -64,15 +61,26 @@ def handle_response(update: Update, context: CallbackContext, option_number: int
         show_next_question(update, context, current_question_index=current_question_index + 1)
     else:
         # Display result for the current typology
-        typology = questions[0].get('typology', 'Unknown Typology')
+        typology = questions_list[current_test_index].get('typology', 'Unknown Typology')
         result = f"{typology} type:\n\n"
-        result += '\n'.join(f"{q['title']}: {user_answers.answers[chat_id][q['title']]}" for q in questions)
-
-        message.reply_text(result, parse_mode=ParseMode.HTML)
+        result += '\n'.join(f"{q['title']}: {user_answers.answers[chat_id][q['title']]}" for q in questions if q['title'] in user_answers.answers[chat_id])
 
         # Clear user answers for the current typology
         for q in questions:
-            del user_answers.answers[chat_id][q['question']]
+            del user_answers.answers[chat_id][q['title']]
+
+        message.reply_text(result, parse_mode=ParseMode.HTML)
+
+        # Add options to start another test or redo the previous one
+        keyboard = [
+            [
+                InlineKeyboardButton("Start another test", callback_data="start_another_test"),
+                InlineKeyboardButton("Redo previous test", callback_data="redo_previous_test"),
+            ]
+        ]
+
+        reply_markup = InlineKeyboardMarkup(keyboard)
+        message.reply_text("What would you like to do next?", reply_markup=reply_markup)
 
         # Move to the next typology
         if current_test_index + 1 < len(questions_list):
@@ -82,3 +90,9 @@ def handle_response(update: Update, context: CallbackContext, option_number: int
         else:
             # No more typologies, clear user answers
             del user_answers.answers[chat_id]
+
+
+
+
+
+

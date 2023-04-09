@@ -17,7 +17,8 @@ def start(update: Update, context: CallbackContext):
 
     # Reset user answers if user has already started
     if chat_id in user_answers:
-        del user_answers.answers[chat_id]
+        del user_answers[chat_id]
+
 
     # Save questions_list in context.chat_data
     context.chat_data['questions_list'] = questions_list

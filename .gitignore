@@ -3,3 +3,5 @@
 *.pyc
 __pycache__/
 /.env
+/terraform/AWS/lamda/.terraform
+/terraform/AWS/lamda/.terraform.lock.hcl

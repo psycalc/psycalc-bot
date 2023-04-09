@@ -19,7 +19,9 @@ files:
   - handlers/start.py
   - handlers/next_question.py
   - handlers\handle_response.py
-  # - requirements.txt
+  - handlers\start_another_test.py
+  - handlers\redo_test.py
+  - requirements.txt
 
 # before_message: "Act so you professional software engineer, I will provide my project that splited into parts, you main goal help me impove my project, following best practices (KISS, DRY, YAGNI, SOLID, etc.)"
 # before_message: "This is updated code, please review it and give me feedback"

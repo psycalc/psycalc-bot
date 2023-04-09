@@ -8,6 +8,8 @@ from telegram.ext import Updater, CommandHandler, CallbackQueryHandler, MessageH
 from handlers.start import start
 from handlers.handle_response import handle_response_wrapper
 from handlers.next_question import show_next_question
+from handlers.start_another_test import start_another_test
+from handlers.redo_previous_test import redo_previous_test
 from telegram import Update
 from telegram.ext import CallbackContext
 import traceback
@@ -104,6 +106,9 @@ def main():
     dispatcher.add_handler(CallbackQueryHandler(handle_response_wrapper, pass_user_data=True, pattern='^option_'))
     dispatcher.add_handler(CallbackQueryHandler(
         show_next_question, pass_chat_data=True, pass_user_data=True, pass_job_queue=True, pattern='next'))
+        
+    dispatcher.add_handler(CallbackQueryHandler(start_another_test, pattern="^start_another_test$"))
+    dispatcher.add_handler(CallbackQueryHandler(redo_previous_test, pattern="^redo_previous_test$"))
 
     # Add handler for user input
     dispatcher.add_handler(MessageHandler(
