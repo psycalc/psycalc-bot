@@ -5,3 +5,4 @@ __pycache__/
 /.env
 /terraform/AWS/lamda/.terraform
 /terraform/AWS/lamda/.terraform.lock.hcl
+/terraform/AWS/lamda/lambda.zip
