@@ -23,6 +23,19 @@ class UserAnswers:
 
 user_answers = UserAnswers()
 
+def get_result_explanation(typology: str, user_answers: dict):
+    explanation = ""
+
+    if typology == "Temporistics":
+        # Ваш код для аналізу відповідей користувача та визначення типу темпористики
+        temporistics_type = determine_temporistics_type(user_answers)
+
+        explanation += f"Ваш тип темпористики: {temporistics_type}\n\n"
+
+        # Додайте рекомендації для кожного типу темпористики
+
+    return explanation
+
 
 def handle_response_wrapper(update: Update, context: CallbackContext):
     try:
@@ -69,7 +82,8 @@ def handle_response(update: Update, context: CallbackContext, option_number: int
         for q in questions:
             del user_answers.answers[chat_id][q['title']]
 
-        message.reply_text(result, parse_mode=ParseMode.HTML)
+        result_explanation = get_result_explanation(typology, user_answers.answers[chat_id])
+        message.reply_text(result_explanation, parse_mode=ParseMode.HTML)
 
         # Add options to start another test or redo the previous one
         keyboard = [
